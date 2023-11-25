@@ -15,8 +15,8 @@ export type TokenPayload = {
 export abstract class Auth {
   static secret = process.env.JWT_SECRET;
   static hash(value: string): Promise<string> {
-    const saltRound = 10   // Numero de vueltas de hash
-    return hash(value, saltRound)
+    const saltRound = 10;
+    return hash(value, saltRound);
   }
 
   static comparison(value: string, hash: string): Promise<boolean> {
