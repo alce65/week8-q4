@@ -21,4 +21,3 @@ New relationship: Luis & Marta (friends)
 New relationship: Luis & Marta (enemies)
 
 Removed relationship: Luis & Marta
-
