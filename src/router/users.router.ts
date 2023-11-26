@@ -1,8 +1,8 @@
 import { UsersController } from "../controllers/users.controller.js";
-import { AuthInterceptor } from "../middleware/auth.interceptor.js";
-import { UsersMongoRepo } from "../repos/users/users.mongo.repo.js";
 import createDebug from 'debug';
 import { Router as createRouter } from 'express';
+import { UsersMongoRepo } from "../repos/users/users.mongo.repo.js";
+import { AuthInterceptor } from "../middleware/auth.interceptor.js";
 
 const debug = createDebug('W7E:users:router');
 
