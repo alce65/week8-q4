@@ -136,6 +136,7 @@ export class UsersMongoRepo implements Repository<User> {
     // }
 
     async addEnemy(id: string, updatedItem: Partial<User>): Promise<User> {
+      if (id === updatedItem.id) throw new HttpError(406, 'Not Acceptable', 'You can´t add yourself');
       const user = await UserModel.findById(updatedItem.id).exec();
       if (!user) {
         throw new HttpError(404, 'Not Found', 'User not found');
@@ -180,7 +181,70 @@ export class UsersMongoRepo implements Repository<User> {
         throw new HttpError(404, 'Not Found', 'Delete not possible');
       }
     }
+
+    async removeFriend(userId: string, friendIdToRemove: Partial<User>): Promise<User> {
+      // eslint-disable-next-line no-useless-catch
+      try {
+        const user = await UserModel.findById(userId).exec();
+        
+        if (!user) {
+          throw new HttpError(404, 'Not Found', 'User not found');
+        }
     
+        if (!user.friends.includes(friendIdToRemove as unknown as User)) {
+          // El amigo no está presente, no es necesario hacer cambios
+          return user;
+        }
+    
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          friendIdToRemove.id,
+          { $pull: { friends: userId } },
+          {
+            new: true,
+          }
+        ).exec();
+    
+        if (!updatedUser) {
+          throw new HttpError(404, 'Not Found', 'Update not possible');
+        }
+    
+        return updatedUser;
+      } catch (error) {
+        // Puedes manejar el error según tus necesidades
+        throw error;
+      }
+    }
+    
+    async removeEnemy(userId: string, enemyIdToRemove: Partial<User>): Promise<User> {
+      // eslint-disable-next-line no-useless-catch
+      try {
+        const user = await UserModel.findById(userId).exec();
+        
+        if (!user) {
+          throw new HttpError(404, 'Not Found', 'User not found');
+        }
+    
+        if (!user.enemies.includes(enemyIdToRemove as unknown as User)) {
+          // El enemigo no está presente, no es necesario hacer cambios
+          return user;
+        }
+    
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          userId,
+          { $pull: { enemies: enemyIdToRemove } },
+          { new: true }
+        ).exec();
+    
+        if (!updatedUser) {
+          throw new HttpError(404, 'Not Found', 'Update not possible');
+        }
+    
+        return updatedUser;
+      } catch (error) {
+        // Puedes manejar el error según tus necesidades
+        throw error;
+      }
+    }
   }
 
   

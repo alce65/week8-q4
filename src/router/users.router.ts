@@ -18,13 +18,13 @@ usersRouter.post('/register', controller.create.bind(controller)); // Crear usua
 usersRouter.post('/login', controller.login.bind(controller)); // Hacer log in
 usersRouter.patch(
   '/add-friend/:id', 
-  interceptor.authentication.bind(interceptor),
+  interceptor.authorization.bind(interceptor),
   controller.addFriend.bind(controller)
 );
 
 usersRouter.patch(
   '/add-enemy/:id',
-  interceptor.authentication.bind(interceptor),
+  interceptor.authorization.bind(interceptor),
   controller.addEnemy.bind(controller)
 );
 
@@ -46,4 +46,16 @@ usersRouter.delete(
   interceptor.authorization.bind(interceptor),
   interceptor.authentication.bind(interceptor),
   controller.delete.bind(controller)
+);
+
+usersRouter.patch(
+  '/remove-friend/:id',
+  interceptor.authorization.bind(interceptor),
+  controller.removeFriend.bind(controller)
+);
+
+usersRouter.patch(
+  '/remove-enemy/:id',
+  interceptor.authorization.bind(interceptor),
+  controller.removeEnemy.bind(controller)
 );

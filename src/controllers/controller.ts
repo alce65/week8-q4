@@ -1,6 +1,8 @@
 /* eslint-disable no-useless-constructor */
+
 import { Repository } from '../repos/repo.js';
 import { NextFunction, Request, Response } from 'express';
+
 
 export abstract class Controller<T extends { id: unknown }> {
   // eslint-disable-next-line no-unused-vars
@@ -47,7 +49,27 @@ export abstract class Controller<T extends { id: unknown }> {
 
   async addFriend(req: Request, res: Response, next: NextFunction) {
     try {
+
       const result = await this.repo.addFriend(req.params.id, req.body);
+     
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async removeEnemy(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.repo.removeEnemy(req.params.id, req.body.enemyIdToRemove);
+      res.json(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async removeFriend(req: Request, res: Response, next: NextFunction) {
+    try {
+      const result = await this.repo.removeFriend(req.params.id, req.body.friendIdToRemove);
       res.json(result);
     } catch (error) {
       next(error);

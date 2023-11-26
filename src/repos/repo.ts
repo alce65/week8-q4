@@ -8,4 +8,6 @@ export interface Repository<X extends { id: unknown }> {
   delete(_id: X['id']): Promise<void>;
   addFriend(_id: X['id'], _updatedItem: Partial<X>): Promise<X>;
   addEnemy(_id: X['id'], _updatedItem: Partial<X>): Promise<X>;
+  removeFriend(_id: X['id'], _friendIdToRemove: Partial<X>): Promise<X>;
+  removeEnemy(_id: X['id'], _enemyIdToRemove: Partial<X>): Promise<X>;
 }
