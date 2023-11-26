@@ -1,4 +1,4 @@
-import { Auth } from './auth';
+import { Auth } from './auth.js';
 import { compare, hash } from 'bcrypt';
 
 jest.mock('bcrypt');  // Todas las funciones mockeadas devuelven undefined

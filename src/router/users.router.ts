@@ -16,14 +16,34 @@ const interceptor = new AuthInterceptor();
 usersRouter.get('/', controller.getAll.bind(controller)); // Ver todos los usuarios
 usersRouter.post('/register', controller.create.bind(controller)); // Crear usuario
 usersRouter.post('/login', controller.login.bind(controller)); // Hacer log in
-usersRouter.patch( // Añadir usuario a amigo
+usersRouter.patch(
   '/add-friend/:id', 
-  interceptor.authorization.bind(interceptor),
-  controller.update.bind(controller),
+  interceptor.authentication.bind(interceptor),
+  controller.addFriend.bind(controller)
 );
-  
-usersRouter.patch( // Token JWT
-  '/login',
+
+usersRouter.patch(
+  '/add-enemy/:id',
+  interceptor.authentication.bind(interceptor),
+  controller.addEnemy.bind(controller)
+);
+
+// A usersRouter.patch( // Token JWT
+//   '/login',
+//   interceptor.authorization.bind(interceptor),
+//   controller.login.bind(controller)
+// );
+usersRouter.patch(
+  '/:id',
   interceptor.authorization.bind(interceptor),
-  controller.login.bind(controller)
+  interceptor.authentication.bind(interceptor),
+  controller.update.bind(controller)
+);
+
+
+usersRouter.delete(
+  '/:id',
+  interceptor.authorization.bind(interceptor),
+  interceptor.authentication.bind(interceptor),
+  controller.delete.bind(controller)
 );
