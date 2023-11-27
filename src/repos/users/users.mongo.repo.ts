@@ -182,38 +182,37 @@ export class UsersMongoRepo implements Repository<User> {
       }
     }
 
-    async removeFriend(userId: string, friendIdToRemove: Partial<User>): Promise<User> {
-      // eslint-disable-next-line no-useless-catch
-      try {
-        const user = await UserModel.findById(userId).exec();
+    // Aasync removeFriend(userId: string, friendIdToRemove: Partial<User>): Promise<User> {
+      
+    //   // eslint-disable-next-line no-useless-catch
+    //   try {
+    //     const user = await UserModel.findById(userId).exec();
         
-        if (!user) {
-          throw new HttpError(404, 'Not Found', 'User not found');
-        }
+    //     if (!user) {
+    //       throw new HttpError(404, 'Not Found', 'User not found');
+    //     }
+
+    //     debug('removefriend', friendIdToRemove.id)
+    //     if (!user.friends || !user.friends.some(friend => friend.id === friendIdToRemove.id)) {
+    //       return user;
+    //     }
+
+    //     const updatedUser = await UserModel.findByIdAndUpdate(
+    //       userId,
+    //       { $pull: { friends: { id: friendIdToRemove.id } } },
+    //       { new: true }
+    //     ).exec();
     
-        if (!user.friends.includes(friendIdToRemove as unknown as User)) {
-          // El amigo no está presente, no es necesario hacer cambios
-          return user;
-        }
+    //     if (!updatedUser) {
+    //       throw new HttpError(404, 'Not Found', 'Update not possible');
+    //     }
     
-        const updatedUser = await UserModel.findByIdAndUpdate(
-          friendIdToRemove.id,
-          { $pull: { friends: userId } },
-          {
-            new: true,
-          }
-        ).exec();
-    
-        if (!updatedUser) {
-          throw new HttpError(404, 'Not Found', 'Update not possible');
-        }
-    
-        return updatedUser;
-      } catch (error) {
-        // Puedes manejar el error según tus necesidades
-        throw error;
-      }
-    }
+    //     return updatedUser;
+    //   } catch (error) {
+    //     // Puedes manejar el error según tus necesidades
+    //     throw error;
+    //   }
+    // }
     
     async removeEnemy(userId: string, enemyIdToRemove: Partial<User>): Promise<User> {
       // eslint-disable-next-line no-useless-catch
@@ -232,6 +231,37 @@ export class UsersMongoRepo implements Repository<User> {
         const updatedUser = await UserModel.findByIdAndUpdate(
           userId,
           { $pull: { enemies: enemyIdToRemove } },
+          { new: true }
+        ).exec();
+    
+        if (!updatedUser) {
+          throw new HttpError(404, 'Not Found', 'Update not possible');
+        }
+    
+        return updatedUser;
+      } catch (error) {
+        // Puedes manejar el error según tus necesidades
+        throw error;
+      }
+    }
+
+    async removeFriend(userId: string, friendIdToRemove: Partial<User>): Promise<User> {
+      // eslint-disable-next-line no-useless-catch
+      try {
+        const user = await UserModel.findById(userId).exec();
+        
+        if (!user) {
+          throw new HttpError(404, 'Not Found', 'User not found');
+        }
+    
+        if (!user.friends.includes(friendIdToRemove as unknown as User)) {
+          // El amigo no está presente, no es necesario hacer cambios
+          return user;
+        }
+    
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          userId,
+          { $pull: { friends: friendIdToRemove } },
           { new: true }
         ).exec();
     
