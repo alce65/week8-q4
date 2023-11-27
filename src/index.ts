@@ -6,14 +6,14 @@ import createDebug from 'debug';
 const PORT = process.env.PORT || 3030;
 
 const server = createServer(app);
-const debug = createDebug('W7E:index')
+const debug = createDebug('W8E:index');
 
-dbConnect().then(
-  (mongoose) => {
+dbConnect()
+  .then((mongoose) => {
     server.listen(PORT);
-  debug('Connected to DB:', mongoose.connection.db.databaseName);
-  }).catch(error => server.emit(error))
-
+    debug('Connected to DB:', mongoose.connection.db.databaseName);
+  })
+  .catch((error) => server.emit(error));
 
 server.on('listening', () => {
   console.log('Listening on port', PORT);
