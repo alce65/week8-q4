@@ -8,7 +8,7 @@ import { HttpError } from '../types/http.error.js';
 const debug = createDebug('W8E:auth');
 debug('Imported');
 export type TokenPayload = {
-  id: User['userId'];
+  id: User['id'];
   email: string;
 } & jwt.JwtPayload;
 
