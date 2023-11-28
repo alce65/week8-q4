@@ -19,14 +19,22 @@ usersRouter.get(
   '/',
   interceptor.authorization.bind(interceptor),
   controller.getAll.bind(controller)
-); // Ver todos los usuarios
+);
 
 usersRouter.post(
   '/register',
   fileInterceptor.singleFileStore('avatar').bind(fileInterceptor),
   controller.create.bind(controller)
-); // Crear usuario
+);
+
 usersRouter.post('/login', controller.login.bind(controller)); // Hacer log in
+
+usersRouter.patch(
+  '/login',
+  interceptor.authorization.bind(interceptor),
+  controller.login.bind(controller)
+);
+
 usersRouter.patch(
   '/add-friend/:id',
   interceptor.authorization.bind(interceptor),
@@ -39,11 +47,18 @@ usersRouter.patch(
   controller.addEnemy.bind(controller)
 );
 
-// A usersRouter.patch( // Token JWT
-//   '/login',
-//   interceptor.authorization.bind(interceptor),
-//   controller.login.bind(controller)
-// );
+usersRouter.patch(
+  '/remove-friend/:id',
+  interceptor.authorization.bind(interceptor),
+  controller.removeFriend.bind(controller)
+);
+
+usersRouter.patch(
+  '/remove-enemy/:id',
+  interceptor.authorization.bind(interceptor),
+  controller.removeEnemy.bind(controller)
+);
+
 usersRouter.patch(
   '/:id',
   interceptor.authorization.bind(interceptor),
@@ -57,16 +72,4 @@ usersRouter.delete(
   // Add ADMIN interceptor.authorization.bind(interceptor),
   // interceptor.authentication.bind(interceptor),
   controller.delete.bind(controller)
-);
-
-usersRouter.patch(
-  '/remove-friend/:id',
-  interceptor.authorization.bind(interceptor),
-  controller.removeFriend.bind(controller)
-);
-
-usersRouter.patch(
-  '/remove-enemy/:id',
-  interceptor.authorization.bind(interceptor),
-  controller.removeEnemy.bind(controller)
 );
