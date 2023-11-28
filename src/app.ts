@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import createDebug from 'debug';
-
 import { errorMiddleware } from './middleware/error.middleware.js';
 import { usersRouter } from './router/users.router.js';
 
