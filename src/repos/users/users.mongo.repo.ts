@@ -64,18 +64,12 @@ export class UsersMongoRepo implements Repository<User> {
     return result;
   }
 
-  // A async addFriend(id: string, updatedItem: Partial<User>): Promise<User> {
-  //   if (id === updatedItem.id) throw new HttpError(406, 'Not Acceptable', 'You can´t add yourself');
-  //   const result = await UserModel.findByIdAndUpdate(
-  //     updatedItem.id,
-  //     { $push: { friends: id } },
-  //     {
-  //       new: true,
-  //     }
-  //   ).exec();
-  //   if (!result) throw new HttpError(404, 'Not Found', 'Update not possible');
-  //   return result;
-  // }
+  async delete(id: string): Promise<void> {
+    const result = await UserModel.findByIdAndDelete(id).exec();
+    if (!result) {
+      throw new HttpError(404, 'Not Found', 'Delete not possible');
+    }
+  }
 
   async addFriend(friendId: User['id'], userId: User['id']): Promise<User> {
     if (friendId === userId)
@@ -119,19 +113,6 @@ export class UsersMongoRepo implements Repository<User> {
     return result;
   }
 
-  // Aasync addEnemy(id: string, updatedItem: Partial<User>): Promise<User> {
-  //   if (id === updatedItem.id) throw new HttpError(406, 'Not Acceptable', 'You can´t add yourself');
-  //   const result = await UserModel.findByIdAndUpdate(
-  //     updatedItem.id,
-  //     { $push: { enemies: id } },
-  //     {
-  //       new: true,
-  //     }
-  //   ).exec();
-  //   if (!result) throw new HttpError(404, 'Not Found', 'Update not possible');
-  //   return result;
-  // }
-
   async addEnemy(enemyId: User['id'], userId: User['id']): Promise<User> {
     if (enemyId === userId)
       throw new HttpError(406, 'Not Acceptable', 'You can´t add yourself');
@@ -172,45 +153,6 @@ export class UsersMongoRepo implements Repository<User> {
 
     return result;
   }
-
-  async delete(id: string): Promise<void> {
-    const result = await UserModel.findByIdAndDelete(id).exec();
-    if (!result) {
-      throw new HttpError(404, 'Not Found', 'Delete not possible');
-    }
-  }
-
-  // Aasync removeFriend(userId: string, friendIdToRemove: Partial<User>): Promise<User> {
-
-  //   // eslint-disable-next-line no-useless-catch
-  //   try {
-  //     const user = await UserModel.findById(userId).exec();
-
-  //     if (!user) {
-  //       throw new HttpError(404, 'Not Found', 'User not found');
-  //     }
-
-  //     debug('removefriend', friendIdToRemove.id)
-  //     if (!user.friends || !user.friends.some(friend => friend.id === friendIdToRemove.id)) {
-  //       return user;
-  //     }
-
-  //     const updatedUser = await UserModel.findByIdAndUpdate(
-  //       userId,
-  //       { $pull: { friends: { id: friendIdToRemove.id } } },
-  //       { new: true }
-  //     ).exec();
-
-  //     if (!updatedUser) {
-  //       throw new HttpError(404, 'Not Found', 'Update not possible');
-  //     }
-
-  //     return updatedUser;
-  //   } catch (error) {
-  //     // Puedes manejar el error según tus necesidades
-  //     throw error;
-  //   }
-  // }
 
   async removeEnemy(
     enemyIdToRemove: User['id'],

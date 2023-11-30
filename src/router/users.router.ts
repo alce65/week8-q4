@@ -69,7 +69,10 @@ usersRouter.patch(
 
 usersRouter.delete(
   '/:id',
-  // Add ADMIN interceptor.authorization.bind(interceptor),
+  interceptor.authorization.bind(interceptor),
+  // Los usuarios borran lo suyo
   // interceptor.authentication.bind(interceptor),
+  // Los Admin pueden borrar
+  interceptor.isAdmin.bind(interceptor),
   controller.delete.bind(controller)
 );
