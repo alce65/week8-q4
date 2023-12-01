@@ -4,6 +4,7 @@ import { Router as createRouter } from 'express';
 import { UsersMongoRepo } from '../repos/users/users.mongo.repo.js';
 import { AuthInterceptor } from '../middleware/auth.interceptor.js';
 import { FileInterceptor } from '../middleware/file.interceptor.js';
+import { ValidationInterceptor } from '../middleware/validation.interceptor.js';
 
 const debug = createDebug('W8E:users:router');
 
@@ -14,6 +15,7 @@ const repo = new UsersMongoRepo();
 const controller = new UsersController(repo);
 const interceptor = new AuthInterceptor();
 const fileInterceptor = new FileInterceptor();
+const validationInterceptor = new ValidationInterceptor();
 
 usersRouter.get(
   '/',
@@ -24,6 +26,7 @@ usersRouter.get(
 usersRouter.post(
   '/register',
   fileInterceptor.singleFileStore('avatar').bind(fileInterceptor),
+  validationInterceptor.registerValidator().bind(validationInterceptor),
   controller.create.bind(controller)
 );
 
